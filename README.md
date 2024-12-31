@@ -39,3 +39,9 @@ sudo apt install dos2unix -y
 sudo dos2unix /opt/reflection/reflector.py
 reflection -h
 ```
+
+## additional installations
+
+```
+pip install charset-normalizer
+```
