@@ -4,6 +4,7 @@ import threading
 import argparse
 from urllib.parse import urlparse, parse_qs, urlunparse, urlencode
 import time
+import charset_normalizer
 
 # Set the timeout limit (in seconds)
 TIMEOUT = 10
@@ -85,9 +86,13 @@ def main():
 
     args = parser.parse_args()
 
-    # Read URLs from the file
+    # Read URLs from the file with dynamic encoding detection
     try:
-        with open(args.file, 'r') as f:
+        with open(args.file, 'rb') as f:
+            detected = charset_normalizer.detect(f.read())
+        encoding = detected['encoding'] or 'utf-8'
+
+        with open(args.file, 'r', encoding=encoding) as f:
             urls = [line.strip() for line in f if line.strip()]
         total_urls = len(urls)
     except Exception as e:
